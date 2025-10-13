@@ -12,22 +12,6 @@ function getCommentsSorted(callback) {
         });
 }
 
-getCommentsSorted((error, comments) => {
-    if (error) {
-        console.error('Не удалось получить комментарии:', error.message);
-        return;
-    }
-    
-    const commentsToShow = Math.min(comments.length, 10);
-    for (let i = 0; i < commentsToShow; i++) {
-        console.log(`Комментарий ${i}: ${comments[i].name}`);
-    }
-});
-
-
-
-const axios = require('axios');
-
 function getTodosFiltered() {
     return axios.get('https://jsonplaceholder.typicode.com/todos')
         .then(response => {
@@ -41,9 +25,21 @@ function getTodosFiltered() {
         });
 }
 
-getTodosFiltered()
-    .then(todos => {
-        console.log('Невыполненные задачи:');
-        todos.slice(0, 5).forEach(todo => console.log(`- ${todo.title}`));
-    })
-    .catch(error => console.error('Не удалось загрузить задачи:', error.message));
+getCommentsSorted((error, comments) => {
+    if (error) {
+        console.error('Не удалось получить комментарии:', error.message);
+        return;
+    }
+    
+    const commentsToShow = Math.min(comments.length, 10);
+    for (let i = 0; i < commentsToShow; i++) {
+        console.log(`Комментарий ${i}: ${comments[i].name}`);
+    }
+    
+    getTodosFiltered()
+        .then(todos => {
+            console.log('Невыполненные задачи:');
+            todos.slice(0, 5).forEach(todo => console.log(`- ${todo.title}`));
+        })
+        .catch(error => console.error('Не удалось загрузить задачи:', error.message));
+});
